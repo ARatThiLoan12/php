@@ -31,7 +31,7 @@ if(isset($_POST["edit"])){
     $c = $_POST["scoreC"];
     $java = $_POST["scoreJava"];
 
-    $sql="UPDATE qlhocsinh SET name='".$name."',java=".$java.",c=".$c."WHERE id=".$id.";";
+    $sql="UPDATE qlhocsinh SET name='".$name."',java=".$java.",c=".$c."WHERE id=".$_POST["edit"];
     $db->query($sql);
 }
 
@@ -47,7 +47,7 @@ if(isset($_POST["edit"])){
     .container{
         margin-left: 300px;
         margin-top: 50px;
-        width: 800px;
+        width: 600px;
     }
     .line{
         display: flex;
@@ -65,19 +65,40 @@ if(isset($_POST["edit"])){
         align-items: center;
         justify-content: space-between;
     }
+    .ban{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
     table{
         width: 500px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
+    table,th,td{
+        margin-top: 30px;
+        border: 1.5px solid lightgrey;
+        margin-left: 15px;
+        border-collapse: collapse;
+        text-align: center;
+        align-items: center;
+        justify-content:space-between;
+    }
+    th,td{
+        width: 150px;
+    }
+    .comment{
+        color: red;
+    }
 </style>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
 </head>
 <body>
     <div class="container">
-        <div>
+        <div class="ban">
             <h2>Student Management</h2>
+            <button action="" method="post">Sort</button>
         </div>
         <div class="add">
             <form action=""method="POST">
@@ -89,11 +110,12 @@ if(isset($_POST["edit"])){
         </div>
     <table>
         <tr>
-            <th>No.</th>
+            <th>ID</th>
             <th>Name</th>
             <th>C score</th>
             <th>Java score</th>
             <th>Average score</th>
+            <th>Level</th>
             <th>Options</th>
         </tr>
         <?php for($i = 0; $i < count($result); $i++) { ?>
@@ -103,7 +125,19 @@ if(isset($_POST["edit"])){
                 <td><h3><?php echo $result[$i][1]; ?></h3></td>
                 <td><h3><?php echo $result[$i][2]; ?></h3></td>
                 <td><h3><?php echo $result[$i][3]; ?></h3></td>
-                <td><h3><?php echo (($result[$i][2] + $result[$i][3])/2); ?></h3></td>
+                <?php $aver = ($result[$i][2] + $result[$i][3])/2; ?>
+                <td><h3><?php echo $aver; ?></h3></td>
+                <td><p class="comment"><?php if($aver>=9){
+                    echo("VeryGood");
+                    }
+                    else if($aver>=8){
+                        echo("Good");
+                    }
+                    else if($aver>=6){
+                        echo("Quite Good");
+                    }
+                    else echo("Average");
+                    ?></p></td>
                 <td>
                     <form action="" method="post">
                     <button name="idDelete" value="<?php echo $result[$i][0] ?>"><i class="fas fa-trash-alt"></i></button>
@@ -117,7 +151,7 @@ if(isset($_POST["edit"])){
         <?php } ?>
     </table>      
     </div>
-   
+
     
     </div>
 
